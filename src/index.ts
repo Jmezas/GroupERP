@@ -7,6 +7,7 @@ const databaseBootstrap= new DatabaseBootstrap();
     try { 
         await serverBootstrap.initialize();
         await databaseBootstrap.initialize()
+        console.log("Conneted to database");
     } catch (err) {
         console.log("error", err)
     } 
