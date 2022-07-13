@@ -10,19 +10,20 @@ export default class DatabaseBootstrap extends DatabaseListen {
   listen(): void {
     throw new Error("Method not implemented.");
   }
-  initialize(): Promise<DataSource | Error> {
-    const parametersConnection = {
+  initialize(): Promise<DataSource | Error> { 
+    const parameterConection ={
       type: "postgres",
-      location: "localhost",
-      port: 5200,
-      user: "user",
-      password: "pssql",
-      database: "postgres",
-      entities: ["src/**/**/*entity.ts"], 
-      synchronize: true,
-      logging: true,
-    } as DataSourceOptions;
-    const data = new DataSource(parametersConnection); 
+      host: process.env.DATABASE_PG_HOST|| "localhost",
+      port: process.env.DATABASE_PG_PORT || 5200,
+      username: process.env.DATABASE_PG_USERNAME|| "user",
+      password:process.env.DATABASE_PG_PASSWORD ||  "pssql",
+      database:process.env.DATABASE_PG_NAME||  "postgres",
+      entities: [process.env.DATABASE_PG_ENTITIES|| "src/**/**/*entity.ts"], 
+      synchronize: process.env.DATABASE_PG_SYNCHRONIZE|| true,
+      logging:process.env.DATABASE_PG_LOGGING|| false,
+    }as DataSourceOptions 
+
+    const data = new DataSource(parameterConection); 
     source = data;
     return data.initialize();
   }

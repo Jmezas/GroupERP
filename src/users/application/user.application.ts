@@ -15,6 +15,6 @@ export class UserApplication {
         return await this.repositoryUser.findById(id);
     }
     async findAll() {
-        return await this.repositoryUser.findAll();
+        return await this.repositoryUser.findAll({},{});
     }
 }

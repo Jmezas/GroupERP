@@ -1,4 +1,3 @@
-import express, { Request, Response, Router } from "express";
 import { UserController } from './user.controller'
 import { UserApplication } from '../../application/user.application';
 import { UserInfrastructure } from '../../infrastructure/user.infrastructure';
@@ -10,13 +9,13 @@ const controller = new UserController(application);
 
 export default class extends BaseRouter { 
     constructor() {
-        super(); 
+        super(controller); 
     } 
     mountRoutes(): void {
-        this.expressRouter.get("/", controller.list)
-        this.expressRouter.post("/", controller.add)
-        this.expressRouter.put("/", controller.update)
-        this.expressRouter.delete("/:id", controller.delete)
-        this.expressRouter.get("/:id", controller.findById)
+        // this.expressRouter.get("/", controller.list)
+        // this.expressRouter.post("/", controller.add)
+        // this.expressRouter.put("/", controller.update)
+        // this.expressRouter.delete("/:id", controller.delete)
+        // this.expressRouter.get("/:id", controller.findById)
     }
 } 
