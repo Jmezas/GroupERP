@@ -1,22 +1,22 @@
 import express, { Application, Request, Response } from "express";
 import RoutesUser from "./users/interfaces/http/users.routes";
-import RoutesDrivers from "./drivers/interfaces/drivers.routes";
-
+import RoutesDrivers from "./drivers/interfaces/drivers.routes"; 
 class App {
   expressApp: Application;
   constructor() {
-      this.expressApp = express();
-      this.mountMiddelwares();
-      this.mountHealthCheck();
+    this.expressApp = express();
+    this.mountMiddelwares();
+    this.mountHealthCheck();
     this.mountRoutes();
   }
 
   mountMiddelwares(): void {
     this.expressApp.use(express.json());
     this.expressApp.use(express.urlencoded({ extended: true })); //req.body
+     
   }
   mountRoutes(): void {
-    this.expressApp.use("/users", new RoutesUser().expressRouter);
+   // this.expressApp.use("/users", new RoutesUser().expressRouter);
     this.expressApp.use("/drivers", new RoutesDrivers().expressRouter);
   }
   mountHealthCheck(): void {

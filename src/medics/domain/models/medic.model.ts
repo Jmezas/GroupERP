@@ -3,6 +3,8 @@ export class MedicModel {
     public id: number,
     public name: string,
     public lastname: string,
-    public cmp: string
+    public cmp: string,
+    public active: boolean,
+
   ) {}
 }
