@@ -13,7 +13,7 @@ export class DriverInfrastructure
   implements DriverRepository
 {
   constructor() {
-    super(DriverEntity)
+    super(DriverEntity,"DriverInfrastructure");
   } 
  async getAll(where: object={}): Promise<Result<DriverModel>> {
     const dataSource=DatabaseBootstrap.dataSource

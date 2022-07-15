@@ -1,5 +1,5 @@
-import { DriverEntity } from "../../../drivers/domain/models/driver.entity";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
+import { DriverEntity } from "../../../drivers/domain/models/driver.entity";
 
 @Entity({ name: "history" })
 export class HistoryEntity {

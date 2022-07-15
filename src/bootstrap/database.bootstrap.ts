@@ -1,29 +1,31 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import { DatabaseListen } from "./bootstrap";
+import yenv from "yenv";
 
+const env = yenv();
 let source: DataSource;
 
 export default class DatabaseBootstrap extends DatabaseListen {
-    static get dataSource(){
-        return source;
-    };
+  static get dataSource() {
+    return source;
+  }
   listen(): void {
     throw new Error("Method not implemented.");
   }
-  initialize(): Promise<DataSource | Error> { 
-    const parameterConection ={
+  initialize(): Promise<DataSource | Error> {
+    const parameterConection = {
       type: "postgres",
-      host: process.env.DATABASE_PG_HOST|| "localhost",
-      port: process.env.DATABASE_PG_PORT || 5200,
-      username: process.env.DATABASE_PG_USERNAME|| "user",
-      password:process.env.DATABASE_PG_PASSWORD ||  "pssql",
-      database:process.env.DATABASE_PG_NAME||  "postgres",
-      entities: [process.env.DATABASE_PG_ENTITIES|| "src/**/**/*entity.ts"], 
-      synchronize: process.env.DATABASE_PG_SYNCHRONIZE|| true,
-      logging:process.env.DATABASE_PG_LOGGING|| false,
-    }as DataSourceOptions 
+      host: env.DATABASE.PG.HOST || "localhost",
+      port: env.DATABASE.PG.PORT || 5200,
+      username: env.DATABASE.PG.USERNAME || "user",
+      password: env.DATABASE.PG.PASSWORD || "pssql",
+      database: env.DATABASE.PG.NAME || "postgres",
+      entities: env.DATABASE.PG.ENTITIES || ["src/**/**/*.entity.ts"],
+      synchronize: env.DATABASE.PG.SYNCHRONIZE || true,
+      logging: env.DATABASE.PG.LOGGING || false,
+    } as DataSourceOptions;
 
-    const data = new DataSource(parameterConection); 
+    const data = new DataSource(parameterConection);
     source = data;
     return data.initialize();
   }

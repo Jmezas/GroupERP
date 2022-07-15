@@ -4,14 +4,15 @@ import * as _ from "lodash";
 import Result from "../application/interface/result.interface";
 import { ResponseDto } from "../application/dto/response.dt";
 import { Trace } from "../helprs/trace.helper";
+import { Logger } from "../helprs/logging.helper";
 export abstract class BaseInfrastructure<T> {
-  constructor(private entity: ObjectType<T>) {}
+  constructor(private entity: ObjectType<T>,private infrastructureName:string=null) {}
   async insert(entity: T): Promise<Result<T>> {
     const dataSource = DatabaseBootstrap.dataSource;
     const repository = dataSource.getRepository(this.entity);
     const intance = repository.create(entity);
     const data: T = await repository.save(intance);
-    return ResponseDto<T>(Trace.TraceId, data);
+    return ResponseDto<T>(Trace.TraceId(), data);
   }
   async update(
     entity: Partial<T>,
@@ -26,7 +27,7 @@ export abstract class BaseInfrastructure<T> {
     });
     recordsToUpdate = _.merge(recordsToUpdate, entity);
     await repository.save(recordsToUpdate);
-    return ResponseDto<T>(Trace.TraceId, recordsToUpdate);
+    return ResponseDto<T>(Trace.TraceId(), recordsToUpdate);
   }
   async delete(where: object): Promise<Result<T>> {
     const dataSource = DatabaseBootstrap.dataSource;
@@ -36,7 +37,7 @@ export abstract class BaseInfrastructure<T> {
     });
     recordsToDelete = _.merge(recordsToDelete, { active: false });
     await repository.save(recordsToDelete);
-    return ResponseDto<T>(Trace.TraceId, recordsToDelete);
+    return ResponseDto<T>(Trace.TraceId(), recordsToDelete);
   }
 
   async findByOne(
@@ -45,14 +46,22 @@ export abstract class BaseInfrastructure<T> {
   ): Promise<Result<T>> {
     const dataSource = DatabaseBootstrap.dataSource;
     const repository: Repository<T> = dataSource.getRepository(this.entity);
-    const data: T = await repository.findOne({ where, relations });  
-    return ResponseDto<T>(Trace.TraceId, data);
+    const data: T = await repository.findOne({ where, relations });
+    return ResponseDto<T>(Trace.TraceId(), data);
   }
   async findAll(
     where: object = {},
     relations: string[] = [],
     order: object = {}
   ): Promise<Result<T>> {
+    Logger.getLogger().info({
+      typeElement: this.infrastructureName,
+      typeAction: "list",
+      traceId: Trace.TraceId(),
+      message: "Listing all drivers",
+      query: JSON.stringify({}),
+      datetime: new Date(),
+    });
     const dataSource = DatabaseBootstrap.dataSource;
     const repository: Repository<T> = dataSource.getRepository(this.entity);
 
@@ -63,7 +72,7 @@ export abstract class BaseInfrastructure<T> {
       relations,
       order,
     });
-    return ResponseDto<T>(Trace.TraceId, data);
+    return ResponseDto<T>(Trace.TraceId(), data);
   }
   async getPage(
     page: number,
@@ -81,6 +90,6 @@ export abstract class BaseInfrastructure<T> {
       skip: page * pagesize,
       take: pagesize,
     });
-    return ResponseDto<T>(Trace.TraceId, data, total);
+    return ResponseDto<T>(Trace.TraceId(), data, total);
   }
 }

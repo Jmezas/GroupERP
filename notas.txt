@@ -1,0 +1,9 @@
+1. Instalar NODEJS
+
+2. Copiar los archivos
+
+3. Instalaer libreria
+
+4. Compilar
+
+5. Ejecutar el codigo

@@ -1,5 +1,5 @@
-import { HistoryEntity } from "../../../histories/domain/models/historyentity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { HistoryEntity } from "../../../histories/domain/models/history.entity";
 
 @Entity({name: "drive"})
 export class DriverEntity{

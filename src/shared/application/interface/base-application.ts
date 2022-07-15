@@ -1,11 +1,14 @@
+import { Trace } from "../../../shared/helprs/trace.helper";
 import { DTOabstract } from "../../../drivers/appication/dto/dto";
 import { BaseRepository } from "../../../shared/domian/repository/base-repository";
 import Result from "./result.interface";
+import { Logger } from "../../../shared/helprs/logging.helper";
 
 export class BaseApplication<T> {
   constructor(
     private repository: BaseRepository<T, number>,
-    private dto: DTOabstract<T> = null
+    private dto: DTOabstract<T> = null,
+    private applicationName: string = null
   ) {}
   async add(entity: T): Promise<Result<T>> {
     return await this.repository.insert(entity);
@@ -29,7 +32,15 @@ export class BaseApplication<T> {
     where: { [s: string]: string | number | boolean },
     relations: string[],
     order: { [s: string]: string }
-  ): Promise<Result<T>> {
+  ): Promise<Result<T>> { 
+    Logger.getLogger().info({
+      typeElement: this.applicationName || "application",
+      typeAction: "list",
+      traceId: Trace.TraceId(),
+      message: "Listing all drivers",
+      query: JSON.stringify({}),
+      datetime: new Date(),
+    }); 
     const result = await this.repository.findAll(where, relations, order);
     return this.dto.mapping(result);
   }

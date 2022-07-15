@@ -1,4 +1,4 @@
-import { BaseApplication } from 'src/shared/application/interface/base-application';
+import { BaseApplication } from '../../shared/application/interface/base-application';
 import { MedicModel } from '../domain/models/medic.model';
 import { MedicRepository } from '../domain/repositories/medic.respository';
 

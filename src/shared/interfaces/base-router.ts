@@ -1,4 +1,5 @@
 import express from "express";
+import { HandlerError } from "../helprs/error.helper";
 export abstract class BaseRouter {
   expressRouter: express.Router;
 
@@ -10,10 +11,19 @@ export abstract class BaseRouter {
   abstract mountRoutes(): void;
 
   mountRoutesCommons(): void {
-    this.expressRouter.get("/", this.Controller.list);
-    this.expressRouter.post("/", this.Controller.add);
-    this.expressRouter.put("/:id", this.Controller.update)
-    this.expressRouter.delete("/:id", this.Controller.delete);
-    this.expressRouter.get("/:id", this.Controller.findOne);
+    this.expressRouter.get("/", HandlerError.catchError(this.Controller.list));
+    this.expressRouter.post("/", HandlerError.catchError(this.Controller.add));
+    this.expressRouter.put(
+      "/:id",
+      HandlerError.catchError(this.Controller.update)
+    );
+    this.expressRouter.delete(
+      "/:id",
+      HandlerError.catchError(this.Controller.delete)
+    );
+    this.expressRouter.get(
+      "/:id",
+      HandlerError.catchError(this.Controller.findOne)
+    );
   }
 }
