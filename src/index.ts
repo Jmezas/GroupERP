@@ -1,10 +1,11 @@
 import ServerBootstrap from "./bootstrap/server.bootstrap";
 import DatabaseBootstrap from "./bootstrap/database.bootstrap";
+import RedisBooststrap from "./bootstrap/redis.bootstrap";
 import { DataSource } from "typeorm";
 
 const serverBootstrap = new ServerBootstrap();
 const databaseBootstrap = new DatabaseBootstrap();
-
+const redisBootstrap = new RedisBooststrap();
 export interface Options {
   type: string;
   host: string;
@@ -18,21 +19,23 @@ export interface Options {
 }
 
 (async () => {
+  
   try {
-    const task = [serverBootstrap.initialize(), databaseBootstrap.initialize()];
+    const task = [serverBootstrap.initialize(), databaseBootstrap.initialize(),redisBootstrap.initialize()];
     const taskComplete = await Promise.all(task);
 
     const options: Options = Object.assign(
       {},
       (taskComplete[1] as DataSource).options
-    ) as Options;
-
-    // await serverBootstrap.initialize();
-    // await databaseBootstrap.initialize();
-    console.log("Conneted to database=>", 
-    options.database,
-    options.host,
-    options.port);
+   
+    ) as Options; 
+    console.log("server started")
+    console.log(
+      "Conneted to database=>",
+      options.database,
+      options.host,
+      options.port
+    );
   } catch (err) {
     console.log("error", err);
   }

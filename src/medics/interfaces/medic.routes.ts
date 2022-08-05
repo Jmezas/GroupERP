@@ -1,8 +1,14 @@
-import express,{Request,Response} from "express";
-const router=express.Router();
-router.get("/", (req: Request, res: Response) => {
-   
-    res.send("Medic")
-})
+import { BaseRouter } from "../../shared/interfaces/base-router";
+import { MedicApplication } from "../application/medic.application";
+import { MedicInfrastructure } from "../infrastructure/Medic.infrastructure";
+import { MedicController } from "./medic.controller";
 
-export default router;
+const intrastructure = new MedicInfrastructure();
+const appication = new MedicApplication(intrastructure);
+const controller = new MedicController(appication);
+export default class extends BaseRouter{
+        constructor(){
+        super(controller);
+    }
+    mountRoutes(): void {} 
+}

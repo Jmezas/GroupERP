@@ -1,5 +1,5 @@
 import { BaseRouter } from "../../shared/interfaces/base-router";
-import { DriverApplication } from "../appication/driver.application";
+import { DriverApplication } from "../application/driver.application";
 import { DriverInfrastructure } from "../infrastructure/driver.infrastructure";
 import { DriverController } from "./driver.controller";
 

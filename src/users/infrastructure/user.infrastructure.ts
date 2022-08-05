@@ -1,5 +1,5 @@
 import { UserModel } from "../domain/models/user.model";
-import { userRepository } from "../domain/repositories/user.respository";
+import { userRepository } from "../domain/repositories/user.repository";
 import { BaseInfrastructure } from "../../shared/infrastructure/base-infrastructure";
 import { UserEntity } from "../domain/models/user.entity";
 export class UserInfrastructure
@@ -7,6 +7,6 @@ export class UserInfrastructure
   implements userRepository
 {
   constructor() {
-    super(UserEntity);
+    super(UserEntity,"UserInfrastructure");
   }
 }

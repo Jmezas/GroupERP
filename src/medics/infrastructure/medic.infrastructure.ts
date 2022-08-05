@@ -1,5 +1,5 @@
-import { MedicModel } from "../domain/models/medic.model";
 import { MedicRepository } from "../domain/repositories/medic.respository";
+import { MedicModel } from "../domain/models/medic.model";
 import { BaseInfrastructure } from "../../shared/infrastructure/base-infrastructure";
 import { MedicEntity } from "../domain/models/medic.entity";
 export class MedicInfrastructure

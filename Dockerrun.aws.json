@@ -1,0 +1,12 @@
+{
+    "AWSEBDockerVersion": "1",
+    "Image":{
+        "name":"702453143343.dkr.ecr.us-east-1.amazonaws.com/grouperp:latest"
+    },
+    "port":[
+        {
+            "containerPort":80
+        }
+    ]
+
+}

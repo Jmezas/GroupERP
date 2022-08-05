@@ -1,8 +1,8 @@
-import { Trace } from "../../../shared/helprs/trace.helper";
-import { DTOabstract } from "../../../drivers/appication/dto/dto";
-import { BaseRepository } from "../../../shared/domian/repository/base-repository";
+import { Trace } from "../../../shared/helprs/trace.helper"; 
+import { BaseRepository } from "../../domain/repository/base-repository";
 import Result from "./result.interface";
 import { Logger } from "../../../shared/helprs/logging.helper";
+import { DTOabstract } from "../dto/abstract.dto";
 
 export class BaseApplication<T> {
   constructor(
@@ -11,14 +11,16 @@ export class BaseApplication<T> {
     private applicationName: string = null
   ) {}
   async add(entity: T): Promise<Result<T>> {
-    return await this.repository.insert(entity);
+    const result = await this.repository.insert(entity);
+    return this.dto.mapping(result); 
   }
   async update(
     entity: T,
     where: object,
     relations: string[]
-  ): Promise<Result<T>> {
-    return await this.repository.update(entity, where, relations);
+  ): Promise<Result<T>> { 
+    const result = await this.repository.update(entity, where, relations);
+    return this.dto.mapping(result); 
   }
   async delete(where: object): Promise<Result<T>> {
     const result = await this.repository.delete(where);
@@ -37,11 +39,11 @@ export class BaseApplication<T> {
       typeElement: this.applicationName || "application",
       typeAction: "list",
       traceId: Trace.TraceId(),
-      message: "Listing all drivers",
+      message: "Listing all",
       query: JSON.stringify({}),
       datetime: new Date(),
     }); 
-    const result = await this.repository.findAll(where, relations, order);
+    const result = await this.repository.findAll(where, relations, order); 
     return this.dto.mapping(result);
   }
   async getPage(

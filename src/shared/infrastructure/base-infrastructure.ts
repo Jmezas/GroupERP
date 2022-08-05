@@ -10,7 +10,7 @@ export abstract class BaseInfrastructure<T> {
   async insert(entity: T): Promise<Result<T>> {
     const dataSource = DatabaseBootstrap.dataSource;
     const repository = dataSource.getRepository(this.entity);
-    const intance = repository.create(entity);
+    const intance = repository.create(entity); 
     const data: T = await repository.save(intance);
     return ResponseDto<T>(Trace.TraceId(), data);
   }

@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres_server
+    ports:
+      - "5100:5432"
+    environment:
+      POSTGRES_PASSWORD: "pssql"
+      POSTGRES_DATABASE: "postgres"
+    volumes:
+      - vol-postgres01:/var/lib/postgressql/data
+    networks:
+      - net-nodejs
+  redis:
+    image: redis:6.0.5-alpine
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+    restart: always
+    
+  logstash:
+    image: logstash:7.8.1
+    container_name: logstash
+    volumes:
+      - ./elk_config/logging.conf:/usr/share/logstash/pipeline/logging.conf
+      - ./elk_config/logstash.yaml:/usr/share/logstash/config/logstash.yml
+    ports:
+      - 1514:1514/udp
+      - 1551:1515
+      - 1515:1515/udp
+    networks:
+      - net-nodejs
+
+  elasticsearch:
+    image: elasticsearch:7.8.0
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - vol-elasticsearch:/usr/share/elasticsearch/data
+      - ./elk_config/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      discovery.type: single-node
+    networks:
+      - net-nodejs
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.1
+    container_name: kibana 
+    volumes:
+      - ./elk_config/kibana.yaml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    networks:
+      - net-nodejs
+volumes:
+  vol-postgres01: 
+  vol-elasticsearch:
+networks:
+  net-nodejs:
+
+     

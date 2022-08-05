@@ -1,4 +1,4 @@
-import { DriverApplication } from "../appication/driver.application"; 
+import { DriverApplication } from "../application/driver.application"; 
 import { Request, Response } from "express";
 import { DriverFactory } from "../domain/models/driver.factory";
 import { Trace } from "../../shared/helprs/trace.helper"; 

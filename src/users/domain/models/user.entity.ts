@@ -1,6 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { RoleEntity } from "../../../roles/domain/models/role.entity";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity({ name: "user" })
+@Entity({ name: "users" })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,8 +18,11 @@ export class UserEntity {
   @Column({ type: "varchar", length: 100 })
   lastname: string;
 
+  @Column({ type: "varchar", length: 100 })
+  email: string;
+
   @Column({ type: "integer" })
-  ege: number; 
+  age: number;
 
   @Column({ type: "varchar", length: 100 })
   password: string;
@@ -23,15 +33,16 @@ export class UserEntity {
   @Column({ type: "timestamp" })
   createdAt: Date;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamp", nullable: true })
   updatedAt: Date;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "timestamp", nullable: true })
   deletedAt: Date;
 
-  @Column({ type: "varchar", length: 100 })
-  email: string;
-  
   @Column({ type: "boolean", default: true })
   active: boolean;
+
+  @ManyToMany((type) => RoleEntity, (role) => role.users)
+  @JoinTable()
+  roles: RoleEntity[];
 }
