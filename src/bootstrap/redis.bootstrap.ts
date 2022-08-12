@@ -1,12 +1,12 @@
-import IORedis from 'ioredis';
+import IORedis from "ioredis";
 import yenv from "yenv";
 
 const env = yenv();
 let client: any;
 export default class RedisBooststrap {
-  private client: IORedis.Redis; 
+  private client: IORedis.Redis;
   initialize(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => { 
       const connectioParamets = {
         host: env.DATABASE.REDIS.HOST,
         port: env.DATABASE.REDIS.PORT,
@@ -15,7 +15,7 @@ export default class RedisBooststrap {
       };
       this.client = new IORedis(connectioParamets);
       this.client
-        .on("Connect", () => {
+        .on("connect", () => {
           console.log("Redis connected");
           resolve(true);
         })
@@ -23,6 +23,7 @@ export default class RedisBooststrap {
           console.log("Redis error", error);
           reject(error);
         });
+
       client = this.client;
     });
   }
@@ -33,6 +34,7 @@ export default class RedisBooststrap {
     return await client.get(key);
   }
   static async set(key: string, value: string) {
+    console.log("set", key, value);
     return await client.set(key, value, "EX", 24 * 60 * 60 * 1000);
   }
   static async clear(prefix: string = "") {

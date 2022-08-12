@@ -22,7 +22,7 @@ export default class CacheRedis {
       }
       const results: any = await RedisBooststrap.get(key); 
       if (results) {
-        console.log("extrar desde cache");
+        console.log("extrar desde cache",results);
         res.json(JSON.parse(results));
       } else {
         res.locals.cachekey = key;

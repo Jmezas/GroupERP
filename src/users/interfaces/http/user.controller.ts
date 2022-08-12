@@ -13,6 +13,7 @@ export class UserController {
     this.findOne = this.findOne.bind(this);
   }
   async list(req: Request, res: Response) {
+    console.log("prueba0");
     Logger.getLogger().info({
       typeElement: "UserController",
       typeAction: "list",
@@ -22,8 +23,9 @@ export class UserController {
       datetime: new Date(),
     });
     const users = await this.application.findAll({}, ["roles"], {});
+ 
     RedisBooststrap.set(res.locals.cachekey, JSON.stringify(users));
-    console.log("prueba");
+    console.log("prueba1");
     return res.json(users);
   }
   async findOne(req: Request, res: Response) {

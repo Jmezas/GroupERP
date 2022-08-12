@@ -4,8 +4,7 @@ import { AuthModel } from "../domain/models/auth.model";
 export class AuthApplication{
     constructor(private respository:AuthRepository){}
 
-    login(auth:AuthModel){
-        console.log("as",auth)
+    login(auth:AuthModel){ 
         return this.respository.login(auth);
     }
     getNewAccessToken(refreshToken:string){
